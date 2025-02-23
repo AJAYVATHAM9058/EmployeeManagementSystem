@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
@@ -25,10 +30,9 @@ public class EmployeeController {
 //	Display list of employees
 	@GetMapping("/home")
 	public String viewHomePage(Model model) {
-
-		model.addAttribute("listOfEmployees", employeeService.getAllEmployees());
-
-		return "index";
+		
+		return findPaginated(1, model);
+		
 	}
 
 	@GetMapping("/showNewEmployeeForm")
@@ -79,5 +83,23 @@ public class EmployeeController {
 		return "redirect:/home";
 	}
 
+	
+	@GetMapping("/page/{pageNo}")
+	public String findPaginated(@PathVariable int pageNo,Model model) {
+		
+		int pageSize = 7;
+		Page<Employee> page = employeeService.findPaginated(pageNo, pageSize);
+		List<Employee> listOfEmployees = page.getContent();
+		
+		model.addAttribute("currentPage",pageNo);
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("totalItems",page.getTotalElements());
+		model.addAttribute("listOfEmployees",listOfEmployees);
+		
+		return "index";
+		
+	}
+	
+	
 
 }

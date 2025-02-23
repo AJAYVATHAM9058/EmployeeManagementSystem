@@ -36,11 +36,11 @@
 					<td th:text="${employee.lastName}"></td>
 					<td th:text="${employee.email}"></td>
 
-					<td>						
-						<a th:href="@{showUpdateForm/{id}(id=${employee.id})}" class="btn btn-success">Update Employee</a>
-						<a th:href="@{deleteEmployee/{id}(id=${employee.id})}" class="btn btn-danger">Delete Employee</a>
-					</td>
-					
+					<td><a th:href="@{/showUpdateForm/{id}(id=${employee.id})}"
+						class="btn btn-primary">Update Employee</a> <a
+						th:href="@{/deleteEmployee/{id}(id=${employee.id})}"
+						class="btn btn-danger">Delete Employee</a></td>
+
 				</tr>
 
 			</tbody>
@@ -48,6 +48,34 @@
 
 		</table>
 
+		<div th:if="${totalPages > 1 }">
+
+			<div class="row col-sm-500">
+
+				<div class="row-sm-1 col-sm-2">Total Pages
+					&nbsp;&nbsp;&nbsp;&nbsp;[[${totalPages}]]</div>
+
+				<div class="col-sm-55">
+
+					<span th:each="i : ${#numbers.sequence(1,totalPages)}"> <a
+						th:if=" ${currentPage != i}" th:href="@{'/page/' + ${i}}">[[${i}]]
+					</a> <span th:unless="${currentPage != i}">[[${i}]]</span>&nbsp;&nbsp;
+
+					</span>
+
+				</div>
+
+				<div class="col-sm-2">
+
+					<span th:if="${currentPage < totalPages}"> <a
+						th:href="@{'/page/' +${totalPages}}">last</a>
+					</span> <span th:unless="${currentPage<totalPages}">last</span>
+				</div>
+
+
+			</div>
+
+		</div>
 
 
 	</div>
