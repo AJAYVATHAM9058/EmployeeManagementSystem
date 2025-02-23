@@ -16,7 +16,7 @@ public interface EmployeeService {
 	
 	Employee fetchEmployeeById(long id);
 	
-	Page<Employee> findPaginated(int pageNo,int pageSzie);
+	Page<Employee> findPaginated(int pageNo,int pageSzie,String sortField,String sortDir);
 	
 }
 
